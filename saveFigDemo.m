@@ -1,19 +1,22 @@
 % saveFigDemo
 
-CASE = 'test';
+CASE = 'train';
 destFigDir = 'figure';
+imgDir = fullfile('img', CASE);
+gtDir = imgDir;
 mkdir(fullfile(destFigDir, CASE));
-imgFiles = dir(fullfile(CASE, '*.JPG'));
+imgFiles = dir(fullfile(imgDir, '*.JPG'));
 nImg = numel(imgFiles);
 for i = 1:nImg
     % read and show image
     imgBaseName = imgFiles(i).name;
-    imageName = fullfile(CASE, imgBaseName);
+    fprintf('%d:%s\n', i, imgBaseName);
+    imageName = fullfile(imgDir, imgBaseName);
     image = imread(imageName);
     cla;
     imshow(image);
     % read and show gt
-    gtName = fullfile(CASE, [imgBaseName(1:end-3), 'gt']);
+    gtName = fullfile(gtDir, [imgBaseName(1:end-3), 'gt']);
     gtData = importdata(gtName);
     if ~isempty(gtData);
         flags = gtData(:, 2); % 0-easy, 1-hard
