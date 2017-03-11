@@ -3,8 +3,9 @@
 % output: XXX.jpg---[x1,y1,x2,y2]-box
 
 CASE = 'train';
+DISPLAY = 0; %
 
-sourceGtDir = fullfile('newGtRaw', 'txt', 'boxChineseWord', CASE);
+sourceGtDir = fullfile('newGtRaw', 'txt', 'boxChineseWord', 'all');
 destGtDir = fullfile('newGt', 'txt', 'boxChineseWord', CASE);
 mkdir(destGtDir);
 imgDir = fullfile('img', CASE);
@@ -15,7 +16,7 @@ for i = 1:nImg
     imgRawName = imgFiles(i).name;
     fprintf('%d:%s\n', i, imgRawName);
     % load gt
-    sourceGtFileName = fullfile(sourceGtDir, [imgRawName, '.txt']);
+    sourceGtFileName = fullfile(sourceGtDir, [imgRawName(1:end-3), 'jpg.txt']);
     destGtFileName = fullfile(destGtDir, [imgRawName(1:end-3), 'txt']);
     box = [];
     if exist(sourceGtFileName, 'file')
@@ -30,13 +31,15 @@ for i = 1:nImg
             box = round([xmin, ymin, xmax, ymax]);
         end
     end
-%     image = imread(fullfile(imgDir, imgRawName));
-%     imshow(image);
-%     displayBoxV2(box);
+    if DISPLAY
+        image = imread(fullfile(imgDir, imgRawName));
+        imshow(image);
+        displayBoxV2(box);
+    end
     % write to destGt
     fp = fopen(destGtFileName, 'wt');
     if ~isempty(box)
-        fprintf(fp, '%d, %d, %d, %d, "2"\n', box);
+        fprintf(fp, '%d, %d, %d, %d, "2"\n', box');
     end
     fclose(fp);
     
