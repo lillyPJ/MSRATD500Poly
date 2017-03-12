@@ -1,14 +1,14 @@
-% prepareBoxEngChiWordDemo
+% prepareBoxEngChiWordDemo--dest:gt dir
 % input-eng: XXX.jpg---[x1,y1,x2,y2]-box
 % input-chi: XXX.jpg---[x1,y1,x2,y2]-box
 % output: XXX.jpg---[x1,y1,x2,y2]-box
 
-CASE = 'train';
+CASE = 'test';
 DISPLAY = 0;
 
-destGtBase = '/home/lili/datasets/MSRATD500Poly';
-sourceEngGtDir = fullfile('newGt', 'txt', 'boxEnglishWord', CASE);
-sourceChiGtDir = fullfile('newGt', 'txt', 'boxChineseWord', CASE);
+destGtBase = '/home/lili/datasets/MSRATD500';
+sourceEngGtDir = fullfile(destGtBase, 'gt', CASE, 'txt', 'boxEnglishWord');
+sourceChiGtDir = fullfile(destGtBase, 'gt', CASE, 'txt', 'boxChineseWord');
 destEngChiGtDir = fullfile(destGtBase, 'gt', CASE, 'txt', 'boxWord');
 mkdir(destEngChiGtDir);
 imgDir = fullfile(destGtBase, 'img', CASE);

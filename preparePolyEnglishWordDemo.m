@@ -1,12 +1,12 @@
-%prepareBoxEnglishWordDemo
-% input: XXX.jpg.txt---XXX.jpg, [x1,y1,x2,y2,x3,y3,x4,y4]-poly
-% output: XXX.jpg---[x1,y1,x2,y2]-box
+%preparePolyEnglishWordDemo--destDir: gt
+% input: XXX.jpg---[x1,y1,x2,y2,x3,y3,x4,y4]-poly
+% output: XXX.jpg---[x1,y1,x2,y2,x3,y3,x4,y4,"1"]-poly
 CASE = 'test';
 DISPLAY = 0;
 
 destGtBase = '/home/lili/datasets/MSRATD500';
 sourceGtDir = fullfile('newGtRaw', 'txt', 'polyEnglishWord', 'all');
-destGtDir = fullfile(destGtBase, 'gt', CASE, 'txt', 'boxEnglishWord');
+destGtDir = fullfile(destGtBase, 'gt', CASE, 'txt', 'polyEnglishWord');
 mkdir(destGtDir);
 imgDir = fullfile(destGtBase, 'img', CASE);
 %
@@ -18,28 +18,20 @@ for i = 1:nImg
     % load gt
     sourceGtFileName = fullfile(sourceGtDir, [imgRawName, '.txt']);
     destGtFileName = fullfile(destGtDir, [imgRawName(1:end-3), 'txt']);
-    box = [];
+    sourceGt = [];
     if exist(sourceGtFileName, 'file')
         sourceGtData = importdata(sourceGtFileName);
-        sourceGt = sourceGtData.data;
-        % poly -> box
-        if ~isempty(sourceGt)
-            xmin = min(sourceGt(:, 1:2:8), [], 2);
-            xmax = max(sourceGt(:, 1:2:8), [], 2);
-            ymin = min(sourceGt(:, 2:2:8), [], 2);
-            ymax = max(sourceGt(:, 2:2:8), [], 2);
-            box = round([xmin, ymin, xmax, ymax]);
-        end
+        sourceGt = round(sourceGtData.data);
     end
     if DISPLAY
         image = imread(fullfile(imgDir, imgRawName));
         imshow(image);
-        displayBoxV2(box);
+        displayPoly(sourceGt);
     end
     % write to destGt
     fp = fopen(destGtFileName, 'wt');
-    if ~isempty(box)
-        fprintf(fp, '%d, %d, %d, %d, "1"\n', box');
+    if ~isempty(sourceGt)
+        fprintf(fp, '%d, %d, %d, %d, %d, %d, %d, %d, "1"\n', sourceGt');
     end
     fclose(fp);
     

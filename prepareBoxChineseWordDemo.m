@@ -5,18 +5,20 @@
 CASE = 'train';
 DISPLAY = 0; %
 
+destGtBase = '/home/lili/datasets/MSRATD500';
 sourceGtDir = fullfile('newGtRaw', 'txt', 'boxChineseWord', 'all');
-destGtDir = fullfile('newGt', 'txt', 'boxChineseWord', CASE);
+destGtDir = fullfile(destGtBase, 'gt', CASE, 'txt', 'boxChineseWord');
+
 mkdir(destGtDir);
-imgDir = fullfile('img', CASE);
+imgDir = fullfile(destGtBase, 'img', CASE);
 %
-imgFiles = dir(fullfile(imgDir, '*.JPG'));
+imgFiles = dir(fullfile(imgDir, '*.jpg'));
 nImg = numel(imgFiles);
 for i = 1:nImg
     imgRawName = imgFiles(i).name;
     fprintf('%d:%s\n', i, imgRawName);
     % load gt
-    sourceGtFileName = fullfile(sourceGtDir, [imgRawName(1:end-3), 'jpg.txt']);
+    sourceGtFileName = fullfile(sourceGtDir, [imgRawName, '.txt']);
     destGtFileName = fullfile(destGtDir, [imgRawName(1:end-3), 'txt']);
     box = [];
     if exist(sourceGtFileName, 'file')

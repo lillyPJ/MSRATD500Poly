@@ -1,6 +1,6 @@
 % 
 %%
-SAVEFIG = 1; %0, 1
+SAVEFIG = 0; %0, 1
 
 %%
 testGtEngBase = fullfile('newGtRaw', 'txt', 'polyEnglishWord');
